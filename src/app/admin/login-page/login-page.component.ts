@@ -14,7 +14,7 @@ export class LoginPageComponent implements OnInit {
   form: FormGroup;
   submitted = false;
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(public authService: AuthService, private router: Router) {
     this.form = new FormGroup({
       email: new FormControl(null, [Validators.required, Validators.email]),
       password: new FormControl(null, [Validators.required, Validators.minLength(6)])
@@ -40,6 +40,8 @@ export class LoginPageComponent implements OnInit {
     this.authService.login(user).subscribe(() => {
       this.form.reset();
       this.router.navigate(['admin', 'dashboard']).then();
+      this.submitted = false;
+    }, () => {
       this.submitted = false;
     });
   }
