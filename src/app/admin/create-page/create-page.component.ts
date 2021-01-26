@@ -10,17 +10,17 @@ import {PostsService} from '../../shared/posts.service';
 })
 export class CreatePageComponent implements OnInit {
 
-  form: FormGroup;
+  form!: FormGroup;
 
   constructor(private postsService: PostsService) {
+  }
+
+  ngOnInit(): void {
     this.form = new FormGroup({
       title: new FormControl(null, [Validators.required]),
       text: new FormControl(null, [Validators.required]),
       author: new FormControl(null, [Validators.required])
     });
-  }
-
-  ngOnInit(): void {
   }
 
   submit(): void {
