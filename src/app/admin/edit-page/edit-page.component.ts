@@ -5,6 +5,7 @@ import {switchMap} from 'rxjs/operators';
 import {Post} from '../../shared/interfaces';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Subscription} from 'rxjs';
+import {AlertService} from '../shared/services/alert.service';
 
 @Component({
   selector: 'app-edit-page',
@@ -18,7 +19,11 @@ export class EditPageComponent implements OnInit, OnDestroy {
   submitted = false;
   updateSubscription!: Subscription;
 
-  constructor(private route: ActivatedRoute, private postService: PostsService, private router: Router) { }
+  constructor(private route: ActivatedRoute,
+              private postService: PostsService,
+              private router: Router,
+              private alertService: AlertService) {
+  }
 
   ngOnInit(): void {
     this.route.params.pipe(switchMap((params: Params) => {
@@ -39,7 +44,7 @@ export class EditPageComponent implements OnInit, OnDestroy {
 
     this.submitted = true;
 
-    this. updateSubscription = this.postService.update({
+    this.updateSubscription = this.postService.update({
       // id: this.post.id,
       // author: this.post.author,
       // date: this.post.date,
@@ -50,6 +55,7 @@ export class EditPageComponent implements OnInit, OnDestroy {
       text: this.form.value.text
     }).subscribe(() => {
       this.submitted = false;
+      this.alertService.success('The post was updated');
       this.router.navigate(['admin', 'dashboard']).then();
     });
   }
